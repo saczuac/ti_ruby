@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  description: MyString
+  type: 
+  percent: 1
+  since: 2016-11-29
+  until: 2016-11-29
+
+two:
+  description: MyString
+  type: 
+  percent: 1
+  since: 2016-11-29
+  until: 2016-11-29
