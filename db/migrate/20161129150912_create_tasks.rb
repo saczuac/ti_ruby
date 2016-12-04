@@ -3,10 +3,12 @@ class CreateTasks < ActiveRecord::Migration[5.0]
     create_table :tasks do |t|
       t.string :description, null: false
       t.string :type, null: false
-      t.integer :percent
-      t.date :since
-      t.date :until
-
+      t.integer :percent, null: true
+      t.date :since, null: true
+      t.date :until, null:true
+      t.string :list, null: false
+      t.belongs_to :state, index: true
+      t.belongs_to :priority, index: true
       t.timestamps
     end
   end

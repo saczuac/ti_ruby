@@ -12,14 +12,31 @@
 
 ActiveRecord::Schema.define(version: 20161129150912) do
 
+  create_table "priorities", force: :cascade do |t|
+    t.string   "name",       null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "states", force: :cascade do |t|
+    t.string   "name",       null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "tasks", force: :cascade do |t|
     t.string   "description", null: false
     t.string   "type",        null: false
     t.integer  "percent"
     t.date     "since"
     t.date     "until"
+    t.string   "list",        null: false
+    t.integer  "state_id"
+    t.integer  "priority_id"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
+    t.index ["priority_id"], name: "index_tasks_on_priority_id"
+    t.index ["state_id"], name: "index_tasks_on_state_id"
   end
 
 end

@@ -1,0 +1,31 @@
+<%= link_to('Back', controller: 'lists',
+        action: 'index') %>
+<h1 class="centered title"><%= @list %> </h1>
+   <%= link_to "New task", {:controller => "tasks", :action => "new", :slug => @slug }%>
+  <table style="width:100%" class="table tabla">
+  <tr>
+    <th>State</th>
+    <th>Priority</th> 
+    <th>Description</th>
+    <th>Type</th>
+    <th>Percent</th>
+    <th>Since</th>
+    <th>Until</th>
+    <th>Actions</th>
+  </tr>
+  	<% @tasks.each do |task| %>
+  	  <tr>
+		<td><%= task.state %></td>
+		<td><%= task.priority %></td>
+		<td><%= task.description %></td>
+		<td><%= task.type %></td>
+		<td><%= task.percent %></td>
+		<td><%= task.since %></td>
+		<td><%= task.until %></td>
+    <td>
+       <%= link_to '<i class="material-icons">mode_edit</i>'.html_safe, edit_task_path( :id => task, :slug => @slug) %>
+    </td>
+	  </tr>
+	<% end %>
+</table>
+<p id="notice"><%= notice %></p>

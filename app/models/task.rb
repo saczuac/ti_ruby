@@ -1,7 +1,14 @@
-class Task < ActiveRecord::Base
+class Task < ApplicationRecord
 	validates :type, presence: true
 	validates :description, presence: true
 	validates :description, length: { maximum: 255, too_long: "%{count} characters is the maximum allowed" }
+	validates :list, presence: true
+
+	belongs_to :state
+	belongs_to :priority
+
+	validates :state, presence: true
+	validates :priority, presence: true
 
 	self.inheritance_column = :type 
 	
@@ -20,6 +27,8 @@ class Large < Task
 		percent
 	end
 end 
+
+class Simple < Task; end 
 
 class Temporary < Task
 	validates :since, presence: true

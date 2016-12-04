@@ -21,6 +21,7 @@ gem 'coffee-rails', '~> 4.2'
 gem 'bootstrap', '~> 4.0.0.alpha5'
 # https://github.com/plataformatec/simple_form#installation
 gem 'simple_form', '~> 3.3'
+gem "friendly_id"
 
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
@@ -35,6 +36,12 @@ gem 'jbuilder', '~> 2.5'
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
+
+source 'https://rails-assets.org' do
+  gem 'rails-assets-tether', '>= 1.1.0'
+end
+
+gem 'material_icons'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

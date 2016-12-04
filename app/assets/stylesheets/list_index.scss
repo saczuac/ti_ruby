@@ -1,0 +1,75 @@
+@import "bootstrap";
+
+body {
+  margin-top: 0;
+  background-image: url("fondo.jpg");
+  background-color: black;
+  background-repeat: no-repeat;
+  background-size:contain;
+  background-attachment: fixed;
+  background-position: center;
+}
+
+.centered {
+	text-align: center;
+}
+
+.white {
+	color:white;
+}
+
+#list_name {
+	width: 40%;
+	margin: 0 auto;
+}
+
+.middle {
+	margin-top: 27em;
+	text-align: center;
+}
+
+h3 {
+	font-family: Quicksand;
+	font-size: 20px;
+	font-style: normal;
+	font-variant: normal;
+	font-weight: bold;
+	line-height: 15.4px;
+}
+
+.list {
+	position: absolute;
+	margin: 0;
+	top:0;
+	right: 0;
+	margin-right: 8em;
+	font-family: Quicksand;
+	font-size: 18px;
+	font-style: normal;
+	font-variant: normal;
+	font-weight: bold;
+	line-height: 15.4px;
+}
+
+.list {
+	a {
+    	color: white;
+    	text-decoration: none;
+	}
+
+	li {
+		padding: 0.5em;
+	}
+}
+
+.footer {
+   margin-top: 1.5em;
+   padding: 1em;
+   position:relative;
+   right: 0;
+   opacity: 0.95;
+   left: 0;
+   bottom: 0;
+   width:96.5%;
+   height:40px;
+}

@@ -1,8 +1,8 @@
-class State < ApplicationRecord
+class Priority < ApplicationRecord
 	validates :name, presence: true
 
 	has_many :tasks
-
+	
 	def to_s
 		name
 	end

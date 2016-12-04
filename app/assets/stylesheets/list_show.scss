@@ -1,0 +1,38 @@
+@import "bootstrap";
+@import "material_icons";
+
+body {
+  margin-top: 0;
+  background-image: url("sea.jpg");
+  background-color: black;
+  background-repeat: no-repeat;
+  background-size:cover;
+  background-attachment: fixed;
+  background-position: center;
+}
+
+.centered {
+	text-align: center;
+}
+
+h1 {
+    margin-top: 2em;
+	font-family: Quicksand;
+	font-variant: normal;
+}
+
+.newtask {
+	margin-top: 2em;
+}
+
+.type {
+	width: 10%;
+}
+
+.tabla {
+	background-color: white;
+}
+
+.hide {
+  display:none;
+}

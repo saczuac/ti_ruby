@@ -1,0 +1,13 @@
+<div class="list white"> Last created lists
+	<ul id="list">
+	<% @lists.each do |list| %>
+		<li><a href="<%= list[:url] %>" id="" ><%= list[:name] %></a></li>
+	<% end %>
+	</ul>
+</div>  
+<%= render 'form', list: @list %>
+<div class="footer centered">
+	<h3 class="white">MANAGE YOUR OWN TASKS IN A DIFFERENT WAY<h3>
+</div> 
+<br>
+
