@@ -21,8 +21,7 @@ gem 'coffee-rails', '~> 4.2'
 gem 'bootstrap', '~> 4.0.0.alpha5'
 # https://github.com/plataformatec/simple_form#installation
 gem 'simple_form', '~> 3.3'
-gem "friendly_id"
-
+gem 'rails-i18n'
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
 # Turbolinks makes navigating your web application faster. Read more: https://github.com/turbolinks/turbolinks

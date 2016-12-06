@@ -3,12 +3,10 @@
 
   <h1 id="title" class="centered title">
     <%= @list %>
-    <a href="#" id="editTitle" data-toggle="modal" data-target="#myModal">
-      <i class="material-icons">mode_edit</i>
-    </a>
+    <%= link_to('<i class="material-icons">mode_edit</i>'.html_safe, edit_list_path(@slug_name)) %>
   </h1>
   <div class="updated">Last update: <%= @last_update %> </div>
-  <div class="link"><a href="<%= @slug %>">List Link</a> </div>
+  <div class="link">Link: <a href="<%= @slug_name %>"><%= @list %></a> </div>
   <% if @tasks.length > 0 %>
   <%= link_to "New task", {:controller => "tasks", :action => "new", :slug => @slug }%>
   <table style="width:100%" class="table tabla">
@@ -43,16 +41,3 @@
 </blockquote>
 <% end %>
 <p id="notice"><%= notice %></p>
-
-<div id="myModal" class="modal fade" role="dialog">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
-      </div>
-      <div class="modal-body centered">
-            <%= render template:"lists/edit", list: @list %>
-      </div>
-    </div>
-  </div>
-</div>
