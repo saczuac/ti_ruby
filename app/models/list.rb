@@ -1,13 +1,15 @@
 class List 
 	include ActiveModel::Model
 
-	attr_accessor :name, :url
+	attr_accessor :name, :url, :update
 
 	validates :name, presence: true
 	validates :url, presence: true
+	validates :update, presence: true
 
 	def initialize(name = nil)
 		self.name = name
+		self.update = DateTime.now
 		unless name.nil? 
 			self.url = List.to_slug(name)
 		end

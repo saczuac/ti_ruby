@@ -1,4 +1,6 @@
 class ListsController < ApplicationController
+  
+  include ListsHelper
 
   layout 'list', only: [:new, :index]
   before_action :set_list, only: [:show, :edit, :update, :destroy]
@@ -9,7 +11,7 @@ class ListsController < ApplicationController
    # reset_session
     session[:lists] ||= {}
     @list = List.new
-    @lists = avaible_lists
+    @lists = avaible_lists.last(5)
   end
 
   def find(slug) #Returns the name associated to the slug
@@ -19,6 +21,19 @@ class ListsController < ApplicationController
       end 
     end
     nil
+  end
+
+  def set_expired_state(expireds)
+    expireds.each do |e| 
+      unless e.state_id == 4
+        e.state_id = 4
+        e.save
+      end
+    end
+  end
+
+  def is_in_lists?(value)
+    avaible_lists.any? {|h| h[:url] == value}
   end
 
   def avaible_lists
@@ -31,12 +46,28 @@ class ListsController < ApplicationController
     lists
   end
 
+  def last_update_of_list
+
+  end
+
+  def last_updated_task(tasks)
+    tasks.max_by {|t| t[:updated_at]}
+  end
+
   # GET /lists/1
   # GET /lists/1.json
   def show
-    @task = Task.new
-    @tasks = Task.where("list = '#{params[:id]}'")
-    @tasks ||= []
+    if is_in_lists?(params[:id])
+      @task = Task.new
+      @tasks = Task.where("list = '#{search(params[:id])}'")
+      @tasks, expireds = @tasks.partition {|t| t.until >= Date.today rescue t }
+      set_expired_state(expireds)
+      @tasks = @tasks.sort_by { |t| t.priority_id }
+      @last_update = last_updated_task(@tasks) > last_update_of_list ? last_updated_task(@tasks) : last_update_of_list rescue last_update_of_list 
+      @tasks ||= []
+    else
+      render :file => "#{Rails.root}/public/404.html",  :status => 404
+    end
   end
 
   # GET /lists/1/edit
@@ -97,8 +128,9 @@ class ListsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_list
+      @slug_name = params[:id] 
       @list = find(params[:id])
-      @slug = params[:id]
+      @slug = search(params[:id])
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

@@ -7,14 +7,14 @@ function fillParameters() {
             $("#since").prop("disabled", true);
             document.getElementById("since").style.display = "none";
             document.getElementById("until").style.display = "none";
-            $("option[value='En Curso']").each(function() {
+            $("option[value='In progress']").each(function() {
                 $(this).remove();
             });
             $('#state').append($('<option>', {
-                value: 'En Curso',
-                text: 'En Curso'
+                value: 'In progress',
+                text: 'In progress'
             }));
-            $("option[value='Expirada']").each(function() {
+            $("option[value='Expired']").each(function() {
                 $(this).remove();
             });
         }
@@ -25,14 +25,14 @@ function fillParameters() {
             $("#until").prop("disabled", false);
             $("#since").prop("disabled", false);
             $("#percent").prop("disabled", true);
-            $("option[value='Expirada']").each(function() {
+            $("option[value='Expired']").each(function() {
                 $(this).remove();
             });
             $('#state').append($('<option>', {
-                value: 'Expirada',
-                text: 'Expirada'
+                value: 'Expired',
+                text: 'Expired'
             }));
-            $("option[value='En Curso']").each(function() {
+            $("option[value='In progress']").each(function() {
                 $(this).remove();
             });
         } else{
@@ -42,10 +42,10 @@ function fillParameters() {
             $("#until").prop("disabled", true);
             $("#since").prop("disabled", true);
             $("#percent").prop("disabled", true);
-            $("option[value='En Curso']").each(function() {
+            $("option[value='In progress']").each(function() {
                 $(this).remove();
             });
-            $("option[value='Expirada']").each(function() {
+            $("option[value='Expired']").each(function() {
                 $(this).remove();
             });
         }

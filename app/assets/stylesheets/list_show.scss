@@ -21,6 +21,11 @@ h1 {
 	font-variant: normal;
 }
 
+.ntask {
+  margin-bottom: 1em;
+  margin-left: 1em;
+}
+
 .newtask {
 	margin-top: 2em;
 }
@@ -35,4 +40,34 @@ h1 {
 
 .hide {
   display:none;
+}
+
+.High {
+  background-color: #F36254;
+}
+
+.Medium {
+  background-color: yellow;
+}
+
+.updated {
+  position: absolute;
+  margin: 0;
+  top:1em;
+  right: 0;
+  margin-right: 2em;
+  font-family: Quicksand;
+  font-size: 18px;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: bold;
+  line-height: 15.4px;
+}
+
+.list {
+  position: relative;
+  margin: 0;
+  top: 1em;
+  right:0;
+  margin-right: 2em;
 }

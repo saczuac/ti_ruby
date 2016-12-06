@@ -1,5 +1,8 @@
 class TasksController < ApplicationController
+
+  include ListsHelper
   before_action :set_task, only: [:show, :edit, :update, :destroy]
+
 
   # GET /tasks
   # GET /tasks.json
@@ -22,21 +25,34 @@ class TasksController < ApplicationController
   def edit
   end
 
-  # POST /tasks
-  # POST /tasks.json
-  def create
+  # Params handler
 
+  def bind_task_params(task_params)
     priority = Priority.find_by(name: "#{task_params[:priority]}")
     state = State.find_by(name: "#{task_params[:state]}")
     tp = task_params
     tp[:priority] = priority
     tp[:state] = state
+    if tp[:type] == 'Simple'
+      tp[:since], tp[:until], tp[:percent] = nil 
+    elsif tp[:type] == 'Large'
+      tp[:since], tp[:until] = nil
+    else
+      tp[:percent] = nil
+    end
+    logger.debug "The task parameters are: #{tp.inspect}"
+    tp
+  end
 
+  # POST /tasks
+  # POST /tasks.json
+  def create
+    tp = bind_task_params(task_params)
     @task = Task.new(tp)
-
+    
     respond_to do |format|
       if @task.save
-        format.html { redirect_to "/#{task_params[:list]}", notice: 'Task was successfully created.' }
+        format.html { redirect_to "/#{search_by_id(task_params[:list])}", notice: 'Task was successfully created.' }
         format.json { render :show, status: :created, location: @task }
       else
         format.html { render :new }
@@ -48,11 +64,8 @@ class TasksController < ApplicationController
   # PATCH/PUT /tasks/1
   # PATCH/PUT /tasks/1.json
   def update
-    priority = Priority.find_by(name: "#{task_params[:priority]}")
-    state = State.find_by(name: "#{task_params[:state]}")
-    tp = task_params
-    tp[:priority] = priority
-    tp[:state] = state
+    tp = bind_task_params(task_params)
+    
     respond_to do |format|
       if @task.becomes(Task).update(tp)
         logger.debug 'Entra acá'

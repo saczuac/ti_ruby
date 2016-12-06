@@ -4,14 +4,14 @@
   <div class="form-inputs">
     <div class="type">
   	<%= f.input :type, collection: ["Simple", "Large", "Temporary"], prompt: "Select the type of task", input_html: { id:'type'} %>
-  	<%= f.input :priority, collection: ["Alta", "Media", "Baja"], prompt: "Select the priority of task"%>
+  	<%= f.input :priority, collection: ["High", "Medium", "Low"], prompt: "Select the priority of task"%>
   	<%= f.input :percent, input_html: { id:'percent'}%>
-    <label for="task[state]">Estado</label>
+    <label for="task[state]">State</label>
     <select id="state" name="task[state]" class="form-control select required">
-      <option value="Pendiente">Pendiente</option>
-      <option value="Realizada">Realizada</option>
-      <option value="En Curso">En Curso</option>
-      <option value="Expirada">Expirada</option>
+      <option value="Pending">Pending</option>
+      <option value="Finished">Finished</option>
+      <option value="In progress">In progress</option>
+      <option value="Expired">Expired</option>
     </select>
     <%= f.input :since, as: :date, input_html: { id:'since'}, html5: true  %>
     <%= f.input :until, as: :date, input_html: { id:'until'}, html5: true %>

@@ -5,10 +5,10 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
-p = State.create({name:'Pendiente'})
-a = Priority.create({name:'Alta'})
 
-State.create([{name:'Pendiente'},{name:'Realizada'},{name:'En curso'},{name:'Expirada'}])
-Priority.create([{name:'Alta'}, {name:'Media'}, {name:'Baja'}])
+State.create([{name:'Pending'},{name:'Finished'},{name:'In progress'},{name:'Expired'}])
+Priority.create([{name:'High'}, {name:'Medium'}, {name:'Low'}])
+p = State.find_by(name:'Pending')
+a = Priority.find_by(name:'High')
 
 Task.create([{type:'Large', description:'Hola tarea larga acá', list:'genio-total', state:p, priority:a, percent:50},{type:'Simple', description:'Hola tarea simple', list:'genio-total', state:p, priority:a}])

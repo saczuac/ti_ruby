@@ -1,7 +1,16 @@
-<%= link_to('Back', controller: 'lists',
+<%= link_to('<i class="material-icons">arrow_back</i>'.html_safe, controller: 'lists',
         action: 'index') %>
-<h1 class="centered title"><%= @list %> </h1>
-   <%= link_to "New task", {:controller => "tasks", :action => "new", :slug => @slug }%>
+
+  <h1 id="title" class="centered title">
+    <%= @list %>
+    <a href="#" id="editTitle" data-toggle="modal" data-target="#myModal">
+      <i class="material-icons">mode_edit</i>
+    </a>
+  </h1>
+  <div class="updated">Last update: <%= @last_update %> </div>
+  <div class="link"><a href="<%= @slug %>">List Link</a> </div>
+  <% if @tasks.length > 0 %>
+  <%= link_to "New task", {:controller => "tasks", :action => "new", :slug => @slug }%>
   <table style="width:100%" class="table tabla">
   <tr>
     <th>State</th>
@@ -14,12 +23,12 @@
     <th>Actions</th>
   </tr>
   	<% @tasks.each do |task| %>
-  	  <tr>
+  	  <tr class="<%= task.priority %>">
 		<td><%= task.state %></td>
 		<td><%= task.priority %></td>
 		<td><%= task.description %></td>
 		<td><%= task.type %></td>
-		<td><%= task.percent %></td>
+		<td><%= task.percent.nil? ? '' : task.percent.to_s + " %"%></td>
 		<td><%= task.since %></td>
 		<td><%= task.until %></td>
     <td>
@@ -28,4 +37,22 @@
 	  </tr>
 	<% end %>
 </table>
+<% else %>
+  <blockquote>
+  <p>There are no tasks for this list, <%= link_to "create one here", {:controller => "tasks", :action => "new", :slug => @slug }%></p>
+</blockquote>
+<% end %>
 <p id="notice"><%= notice %></p>
+
+<div id="myModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+      <div class="modal-body centered">
+            <%= render template:"lists/edit", list: @list %>
+      </div>
+    </div>
+  </div>
+</div>
