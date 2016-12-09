@@ -12,6 +12,9 @@
 
 ActiveRecord::Schema.define(version: 20161129150912) do
 
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
   create_table "priorities", force: :cascade do |t|
     t.string   "name",       null: false
     t.datetime "created_at", null: false
@@ -35,8 +38,8 @@ ActiveRecord::Schema.define(version: 20161129150912) do
     t.integer  "priority_id"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
-    t.index ["priority_id"], name: "index_tasks_on_priority_id"
-    t.index ["state_id"], name: "index_tasks_on_state_id"
+    t.index ["priority_id"], name: "index_tasks_on_priority_id", using: :btree
+    t.index ["state_id"], name: "index_tasks_on_state_id", using: :btree
   end
 
 end
