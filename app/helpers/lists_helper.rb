@@ -37,8 +37,13 @@ module ListsHelper
     nil
   end
 
-  def is_in_lists?(value)
-    avaible_lists.any? {|h| h[:url] == value}
+  def is_in_lists?(slug)
+    session[:lists].each do |key, value|
+      if value[1] == slug
+        return true
+      end
+    end
+    return false
   end
 
   def avaible_lists
@@ -46,15 +51,26 @@ module ListsHelper
     lists = []
     if session[:lists].length > 0
        session[:lists].each do |key, value|
+        unless key.to_s == "0" #Lista 0 afuera...
           lists << {name: value[0], url: value[1], updated_at: value[2]}
+        end
        end
     end
     lists
   end
 
+  def exists_slug?(slug)
+    session[:lists].each do |key, value|
+      if value[1] == slug
+        return true
+      end 
+    end
+    false
+  end
+
   def to_slug(name)
       #strip the string
-      ret = name.strip
+      ret = name.strip.downcase
       #blow away apostrophes
       ret.gsub! /['`]/,""
       # @ --> at, and & --> and
@@ -69,9 +85,17 @@ module ListsHelper
       ret
   end
 
+  def last_id
+    session[:lists].length == 0 ? 0 : session[:lists].keys.last.to_i + 1
+  end
+
   def save(name)
    begin
-     session[:lists][:"#{session[:lists].length}"] = [name, to_slug(name), Time.now]
+    unless exists_slug?(to_slug(name))
+     session[:lists][:"#{last_id.to_s}"] = [name, to_slug(name), Time.now, Time.now]
+    else 
+      return false
+    end
    rescue
      false
    end
@@ -82,9 +106,16 @@ module ListsHelper
     session[:lists].each do |key, value|
       if value[0] == old_name
         value[0] = new_name
-        value[1] = to_slug(new_name)
         value[2] = Time.now
         return 
+      end
+    end
+  end
+
+  def date_of_created(slug)
+    session[:lists].each do |key,value|
+      if value[1] == slug
+        return value[3]
       end
     end
   end

@@ -12,6 +12,7 @@ class ListsController < ApplicationController
   def index
    # reset_session # uncomment the first hashtag if you want to reset the session
     session[:lists] ||= {}
+    session[:lists][:"0"] = ['Lista 0', to_slug('Lista 0'), Time.now, Time.now]
     @list = List.new
     @lists = avaible_lists.last(5)
   end
@@ -27,6 +28,7 @@ class ListsController < ApplicationController
       set_expired_state(expireds)
       @tasks = @tasks.sort_by { |t| t.priority_id }
       @last_update = last_updated_task(@tasks).updated_at > last_update_of_list(params[:id]) ? last_updated_task(@tasks).updated_at : last_update_of_list(params[:id]) rescue last_update_of_list(params[:id]) 
+      @created_at = date_of_created(params[:id])
       @tasks ||= []
     else
       render :file => "#{Rails.root}/public/404.html",  :status => 404
@@ -41,14 +43,14 @@ class ListsController < ApplicationController
   # POST /lists
   # POST /lists.json
   def create
-    @list = List.new(list_params[:name])
-
     respond_to do |format|
+      @list = List.new(list_params[:name], to_slug(list_params[:name]))
+
       if save(@list.name)
         format.html { redirect_to "/#{@list.url}", notice: 'List was successfully created.' }
         format.json { render :show, status: :created, location: @list }
       else
-        format.html { render :index }
+        format.html { redirect_to "/", notice: "Error: The slug #{to_slug(list_params[:name])} already exists." }
         format.json { render json: @list.errors, status: :unprocessable_entity }
       end
     end
@@ -60,11 +62,10 @@ class ListsController < ApplicationController
   def update
     old_name = find_name_by_slug(params[:slug])
     new_name = params[:"#{old_name}"][:name]
-    new_slug = to_slug(new_name) 
 
     respond_to do |format|
         list_update(new_name, old_name)
-        format.html { redirect_to "/#{new_slug}", notice: 'List was successfully updated.' }
+        format.html { redirect_to "/#{params[:slug]}", notice: 'List was successfully updated.' }
         format.json { render :show, status: :ok, location: @list }
     end
   end

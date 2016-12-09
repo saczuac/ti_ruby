@@ -17,7 +17,7 @@
     <%= f.input :until, as: :date, input_html: { id:'until'}, html5: true %>
     <input type="text" id="list" name="task[list]" class="hide" value="<%= params[:slug] %>" />
   	</div>
-  	<%= f.input :description, as: :text, class: 'form-control desc', input_html: { cols:'40', rows: '5'}%>
+  	<%= f.input :description, as: :text, class: 'form-control desc', input_html: { cols:'40', rows: '5', maxlength: 255}%>
   </div>
 
   <div class="form-actions">

@@ -6,9 +6,10 @@
     <%= link_to('<i class="material-icons">mode_edit</i>'.html_safe, edit_list_path(@slug_name)) %>
   </h1>
   <div class="updated">Last update: <%= @last_update %> </div>
+  <div>List created at: <%= @created_at %> </div>
   <div class="link">Link: <a href="<%= @slug_name %>"><%= @list %></a> </div>
   <% if @tasks.length > 0 %>
-  <%= link_to "New task", {:controller => "tasks", :action => "new", :slug => @slug }%>
+  <%= link_to "New task", {:controller => "tasks", :action => "new", :slug => @slug, :slug_name => @slug_name }%>
   <table style="width:100%" class="table tabla">
   <tr>
     <th>State</th>
@@ -30,14 +31,14 @@
 		<td><%= task.since %></td>
 		<td><%= task.until %></td>
     <td>
-       <%= link_to '<i class="material-icons">mode_edit</i>'.html_safe, edit_task_path( :id => task, :slug => @slug) %>
+       <%= link_to '<i class="material-icons">mode_edit</i>'.html_safe, edit_task_path( :id => task, :slug => @slug, :slug_name => @slug_name ) %>
     </td>
 	  </tr>
 	<% end %>
 </table>
 <% else %>
   <blockquote>
-  <p>There are no tasks for this list, <%= link_to "create one here", {:controller => "tasks", :action => "new", :slug => @slug }%></p>
+  <p>There are no tasks for this list, <%= link_to "create one here", {:controller => "tasks", :action => "new", :slug => @slug, :slug_name => @slug_name }%></p>
 </blockquote>
 <% end %>
 <p id="notice"><%= notice %></p>
