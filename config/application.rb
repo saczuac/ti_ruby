@@ -18,6 +18,7 @@ Bundler.require(*Rails.groups)
 
 module TiRuby
   class Application < Rails::Application
+  	config.assets.precompile += %w(*.png *.jpg *.jpeg *.gif)
   	TiRuby::Application.config.session_store :cookie_store, key: 'lists'
   	config.i18n.default_locale = :'es-AR'
   	config.time_zone = 'Buenos Aires'
