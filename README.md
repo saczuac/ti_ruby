@@ -37,3 +37,5 @@ Para inicializar el servidor simplemente correr el comando ```bundle exec rails 
 ## Deploy en Heroku
 
 En caso de no querer instalar localmente el proyecto puede utilizarse el despliege en heroku: [link a la aplicación](https://todoruby.herokuapp.com/) 
+
+Recordar que se encuentra una lista llamada "Lista 0" cuyas tareas se dieron de alta en los seeds. Para poder acceder a ella simplemente hágalo por su slug: *lista-0*
