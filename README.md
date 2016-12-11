@@ -8,7 +8,7 @@ Para poder correr este proyecto necesitará de las siguientes **dependencias**:
 
 * Ruby version: >= 2.3.1
 
-* Database: postgresql => Crear una base de datos con nombre: "todomaster"
+* Database: postgresql
 
 * Gema *bundler*
 
