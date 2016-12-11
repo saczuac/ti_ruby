@@ -26,6 +26,10 @@ Para poder inicializar el proyecto correr los siguientes *comandos* en una conso
 
 + Para generar los seeds de datos iniciales de la base de datos: ```bundle exec rails db:seed```
 
+## Correr tests
+
+Se utilizó *rspec* para la elaboración de tests, para correr dichos tests utiizar el comando ```bundle exec rspec``` 
+
 ## Inicialización
 
 Para inicializar el servidor simplemente correr el comando ```bundle exec rails server``` y dirigirse a un navegador a localhost:3000 
