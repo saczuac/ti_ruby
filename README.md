@@ -1,24 +1,35 @@
-# README
+# Trabajo Final
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+Este proyecto es el trabajo final para la materia TTPS Ruby de la facultad de informática de la UNLP
 
-Things you may want to cover:
+## Dependencias 
 
-* Ruby version
+Para poder correr este proyecto necesitará de las siguientes **dependencias**:
 
-* System dependencies
+* Ruby version: >= 2.3.1
 
-* Configuration
+* Database: postgresql => Crear una base de datos con nombre: "todomaster"
 
-* Database creation
+* Gema *bundler*
 
-* Database initialization
+* Gema *rails*
 
-* How to run the test suite
+## Configuración
 
-* Services (job queues, cache servers, search engines, etc.)
+Para poder inicializar el proyecto correr los siguientes *comandos* en una consola linux parado adentro del directorio del proyecto:
 
-* Deployment instructions
++ Para instalar las gemas del proyecto: ```bundle install```
 
-* ...
++ Para crear la base de datos: ```bundle exec rails db:create```
+
++ Para correr las migraciones de la base de datos: ```bundle exec rails db:migrate```
+
++ Para generar los seeds de datos iniciales de la base de datos: ```bundle exec rails db:seed```
+
+## Inicialización
+
+Para inicializar el servidor simplemente correr el comando ```bundle exec rails server``` y dirigirse a un navegador a localhost:3000 
+
+## Deploy en Heroku
+
+En caso de no querer instalar localmente el proyecto puede utilizarse el despliege en heroku: [link a la aplicación](https://todoruby.herokuapp.com/) 

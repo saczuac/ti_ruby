@@ -69,24 +69,36 @@ module ListsHelper
   end
 
   def to_slug(name)
-      #strip the string
-      ret = name.strip.downcase
-      #blow away apostrophes
-      ret.gsub! /['`]/,""
-      # @ --> at, and & --> and
-      ret.gsub! /\s*@\s*/, " at "
-      ret.gsub! /\s*&\s*/, " and "
-      #replace all non alphanumeric, underscore or periods with underscore
-      ret.gsub! /\s*[^A-Za-z0-9\.\-]\s*/, '-'  
-      #convert double underscores to single
-      ret.gsub! /-+/,"-"
-      #strip off leading/trailing underscore
-      ret.gsub! /\A[-\.]+|[-\.]+\z/,""
-      ret
+      unless name.nil?
+        #strip the string
+        ret = name.strip.downcase
+        #blow away apostrophes
+        ret.gsub! /['`]/,""
+        # @ --> at, and & --> and
+        ret.gsub! /\s*@\s*/, " at "
+        ret.gsub! /\s*&\s*/, " and "
+        #replace all non alphanumeric, underscore or periods with underscore
+        ret.gsub! /\s*[^A-Za-z0-9\.\-]\s*/, '-'  
+        #convert double underscores to single
+        ret.gsub! /-+/,"-"
+        #strip off leading/trailing underscore
+        ret.gsub! /\A[-\.]+|[-\.]+\z/,""
+        ret
+      end
   end
 
   def last_id
     session[:lists].length == 0 ? 0 : session[:lists].keys.last.to_i + 1
+  end
+
+  def list_update(new_name, old_name)
+    session[:lists].each do |key, value|
+      if value[0] == old_name
+        value[0] = new_name
+        value[2] = Time.now
+        return 
+      end
+    end
   end
 
   def save(name)
@@ -100,16 +112,6 @@ module ListsHelper
      false
    end
     true
-  end
-
-  def list_update(new_name, old_name)
-    session[:lists].each do |key, value|
-      if value[0] == old_name
-        value[0] = new_name
-        value[2] = Time.now
-        return 
-      end
-    end
   end
 
   def date_of_created(slug)

@@ -14,6 +14,10 @@ module TasksHelper
     tasks.max_by {|t| t[:updated_at]}
   end
 
+  def check_params(task_params)
+
+  end
+
   def bind_task_params(task_params)
     priority = Priority.find_by(name: "#{task_params[:priority]}")
     state = State.find_by(name: "#{task_params[:state]}")
@@ -27,8 +31,7 @@ module TasksHelper
     else
       tp[:percent] = nil
     end
-    logger.debug "The task parameters are: #{tp.inspect}"
     tp
-  end
+ end
 
 end

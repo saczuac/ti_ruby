@@ -22,6 +22,7 @@ end
 
 class Large < Task
 	validates :percent, presence: true
+	validates :percent, :inclusion => {:in => 0..100}
 
 	def to_s
 		percent
@@ -33,4 +34,10 @@ class Simple < Task; end
 class Temporary < Task
 	validates :since, presence: true
 	validates :until, presence: true
+	validate :until_cannot_be_earlier_than_since
+
+  	def until_cannot_be_earlier_than_since
+    	errors.add(:until, "can't be earlier than since date") if
+      	!self.until.blank? and self.until < since
+  	end
 end 

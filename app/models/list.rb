@@ -22,4 +22,8 @@ class List
 		self.updated_at = self.created_at
 		self
 	end
+
+  def persisted?
+    false
+  end
 end

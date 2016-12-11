@@ -2,14 +2,14 @@
 
 one:
   description: MyString
-  type: 
-  percent: 1
-  since: 2016-11-29
-  until: 2016-11-29
+  type: Simple
+  list: 4
+  state: Pending
+  priority: High
 
 two:
   description: MyString
-  type: 
-  percent: 1
-  since: 2016-11-29
-  until: 2016-11-29
+  type: Simple
+  list: 4
+  state: Pending
+  priority: High

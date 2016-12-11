@@ -5,7 +5,7 @@
     <div class="type">
   	<%= f.input :type, collection: ["Simple", "Large", "Temporary"], prompt: "Select the type of task", input_html: { id:'type'} %>
   	<%= f.input :priority, collection: ["High", "Medium", "Low"], prompt: "Select the priority of task"%>
-  	<%= f.input :percent, input_html: { id:'percent'}%>
+  	<%= f.input :percent, as: :integer, input_html: { id:'percent', min:'0', max:'100'}%>
     <label for="task[state]">State</label>
     <select id="state" name="task[state]" class="form-control select required">
       <option value="Pending">Pending</option>
@@ -13,8 +13,8 @@
       <option value="In progress">In progress</option>
       <option value="Expired">Expired</option>
     </select>
-    <%= f.input :since, as: :date, input_html: { id:'since'}, html5: true  %>
-    <%= f.input :until, as: :date, input_html: { id:'until'}, html5: true %>
+    <%= f.input :since, as: :date, input_html: { id:'since'}, html5: true, required: true  %>
+    <%= f.input :until, as: :date, input_html: { id:'until'}, html5: true, required: true %>
     <input type="text" id="list" name="task[list]" class="hide" value="<%= params[:slug] %>" />
   	</div>
   	<%= f.input :description, as: :text, class: 'form-control desc', input_html: { cols:'40', rows: '5', maxlength: 255}%>

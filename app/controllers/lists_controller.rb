@@ -4,7 +4,7 @@ class ListsController < ApplicationController
   include TasksHelper
 
   layout 'list', only: [:new, :index]
-  before_action :set_list, only: [:show, :edit, :update, :destroy]
+  before_action :set_list, only: [:show, :edit, :update]
 
   # GET /
   # GET /lists
@@ -24,12 +24,13 @@ class ListsController < ApplicationController
     if is_in_lists?(params[:id])
       @task = Task.new
       @tasks = Task.where("list = '#{search(params[:id])}'")
-      @tasks, expireds = @tasks.partition {|t| t.until >= Date.today rescue t }
-      set_expired_state(expireds)
+      @tasks, @expireds = @tasks.partition {|t| t.until >= Date.today rescue t }
+      set_expired_state(@expireds)
       @tasks = @tasks.sort_by { |t| t.priority_id }
       @last_update = last_updated_task(@tasks).updated_at > last_update_of_list(params[:id]) ? last_updated_task(@tasks).updated_at : last_update_of_list(params[:id]) rescue last_update_of_list(params[:id]) 
       @created_at = date_of_created(params[:id])
       @tasks ||= []
+      @test = @tasks.map {|t| t.description }
     else
       render :file => "#{Rails.root}/public/404.html",  :status => 404
     end
@@ -46,11 +47,11 @@ class ListsController < ApplicationController
     respond_to do |format|
       @list = List.new(list_params[:name], to_slug(list_params[:name]))
 
-      if save(@list.name)
+      if @list.valid? && save(@list.name)
         format.html { redirect_to "/#{@list.url}", notice: 'List was successfully created.' }
         format.json { render :show, status: :created, location: @list }
       else
-        format.html { redirect_to "/", notice: "Error: The slug #{to_slug(list_params[:name])} already exists." }
+        format.html { redirect_to "/", notice: "Error: The slug #{to_slug(list_params[:name])} already exists or it is invalid" }
         format.json { render json: @list.errors, status: :unprocessable_entity }
       end
     end
@@ -64,19 +65,14 @@ class ListsController < ApplicationController
     new_name = params[:"#{old_name}"][:name]
 
     respond_to do |format|
+      unless new_name.length == 0
         list_update(new_name, old_name)
         format.html { redirect_to "/#{params[:slug]}", notice: 'List was successfully updated.' }
         format.json { render :show, status: :ok, location: @list }
-    end
-  end
-
-  # DELETE /lists/1
-  # DELETE /lists/1.json
-  def destroy
-    @list.destroy
-    respond_to do |format|
-      format.html { redirect_to lists_url, notice: 'List was successfully destroyed.' }
-      format.json { head :no_content }
+      else
+        format.html { redirect_to "/lists/#{params[:slug]}/edit", notice: "Error: You must enter a new name" }
+        format.json { render json: @list.errors, status: :unprocessable_entity }
+      end
     end
   end
 
