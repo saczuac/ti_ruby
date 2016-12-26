@@ -36,7 +36,7 @@ class TasksController < ApplicationController
     
     respond_to do |format|
       if @task.save
-        format.html { redirect_to "/#{search_by_id(task_params[:list])}", notice: 'Task was successfully created.' }
+        format.html { redirect_to "/#{tp[:list].slug}", notice: 'Task was successfully created.' }
         format.json { render :show, status: :created, location: @task }
       else
         format.html { render :new }
@@ -49,11 +49,10 @@ class TasksController < ApplicationController
   # PATCH/PUT /tasks/1.json
   def update
     tp = bind_task_params(task_params)
-    
+    task_class = Object.const_get "#{tp[:type]}"
     respond_to do |format|
-      if @task.becomes(Task).update(tp)
-        logger.debug 'Entra acá'
-        format.html { redirect_to "/#{search_by_id(task_params[:list])}", notice: 'Task was successfully updated.' }
+      if @task.becomes(task_class).update(tp)
+        format.html { redirect_to "/#{tp[:list].slug}", notice: 'Task was successfully updated.' }
         format.json { render :show, status: :ok, location: @task }
       else
         format.html { render :edit }

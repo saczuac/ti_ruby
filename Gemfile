@@ -8,6 +8,9 @@ gem 'rails', '~> 5.0.0', '>= 5.0.0.1'
 gem 'rails_12factor', group: :production
 #using rspec testing
 gem 'rspec-rails'
+# using timevalidates
+gem 'validates_timeliness', '~> 4.0'
+#testing
 gem 'rails-controller-testing'
 # Use postgres
 gem 'pg'

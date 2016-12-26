@@ -4,15 +4,14 @@ class ListsController < ApplicationController
   include TasksHelper
 
   layout 'list', only: [:new, :index]
-  before_action :set_list, only: [:show, :edit, :update]
+  before_action :set_list, only: [:show, :edit]
 
   # GET /
   # GET /lists
   # GET /lists.json
   def index
-   # reset_session # uncomment the first hashtag if you want to reset the session
+    #reset_session # uncomment the first hashtag if you want to reset the session
     session[:lists] ||= {}
-    session[:lists][:"0"] = ['Lista 0', to_slug('Lista 0'), Time.now, Time.now]
     @list = List.new
     @lists = avaible_lists.last(5)
   end
@@ -21,15 +20,12 @@ class ListsController < ApplicationController
   # GET /lists/1
   # GET /lists/1.json
   def show
-    if is_in_lists?(params[:id])
+    l = List.find_by(slug: params[:id])
+    unless l.nil?
       @task = Task.new
-      @tasks = Task.where("list = '#{search(params[:id])}'")
-      @tasks, @expireds = @tasks.partition {|t| t.until >= Date.today rescue t }
-      set_expired_state(@expireds)
-      @tasks = @tasks.sort_by { |t| t.priority_id }
-      @last_update = last_updated_task(@tasks).updated_at > last_update_of_list(params[:id]) ? last_updated_task(@tasks).updated_at : last_update_of_list(params[:id]) rescue last_update_of_list(params[:id]) 
-      @created_at = date_of_created(params[:id])
-      @tasks ||= []
+      @tasks = l.tasks.order(:priority_id) || []
+      @last_update = last_updated_task(@tasks).updated_at > l.updated_at ? last_updated_task(@tasks).updated_at : l.updated_at rescue l.updated_at 
+      @created_at = l.created_at
       @test = @tasks.map {|t| t.description }
     else
       render :file => "#{Rails.root}/public/404.html",  :status => 404
@@ -40,18 +36,37 @@ class ListsController < ApplicationController
   def edit
   end
 
+  def to_slug(name)
+      unless name.nil?
+        #strip the string
+        ret = name.strip.downcase
+        #blow away apostrophes
+        ret.gsub! /['`]/,""
+        # @ --> at, and & --> and
+        ret.gsub! /\s*@\s*/, " at "
+        ret.gsub! /\s*&\s*/, " and "
+        #replace all non alphanumeric, underscore or periods with underscore
+        ret.gsub! /\s*[^A-Za-z0-9\.\-]\s*/, '-'  
+        #convert double underscores to single
+        ret.gsub! /-+/,"-"
+        #strip off leading/trailing underscore
+        ret.gsub! /\A[-\.]+|[-\.]+\z/,""
+        ret
+      end
+  end
+
   # POST /
   # POST /lists
   # POST /lists.json
   def create
+    @list = List.new({ title: params[:list][:title], slug: to_slug(params[:list][:title])})
     respond_to do |format|
-      @list = List.new(list_params[:name], to_slug(list_params[:name]))
-
-      if @list.valid? && save(@list.name)
-        format.html { redirect_to "/#{@list.url}", notice: 'List was successfully created.' }
+      if @list.save
+        add_list_to_session(@list.slug)
+        format.html { redirect_to "/#{@list.slug}", notice: 'List was successfully created.' }
         format.json { render :show, status: :created, location: @list }
       else
-        format.html { redirect_to "/", notice: "Error: The slug #{to_slug(list_params[:name])} already exists or it is invalid" }
+        format.html { redirect_to "/", notice: "Error: The slug #{to_slug(params[:list][:title])} already exists or it is invalid" }
         format.json { render json: @list.errors, status: :unprocessable_entity }
       end
     end
@@ -61,30 +76,30 @@ class ListsController < ApplicationController
   # PATCH/PUT /lists/1
   # PATCH/PUT /lists/1.json
   def update
-    old_name = find_name_by_slug(params[:slug])
-    new_name = params[:"#{old_name}"][:name]
+    @list = List.find_by(slug: params[:slug])
+    old_name = @list.title
+    new_name = params[:"#{old_name}"][:title]
 
     respond_to do |format|
-      unless new_name.length == 0
-        list_update(new_name, old_name)
+      if new_name.length != 0 && @list.update({title: new_name})
         format.html { redirect_to "/#{params[:slug]}", notice: 'List was successfully updated.' }
         format.json { render :show, status: :ok, location: @list }
       else
         format.html { redirect_to "/lists/#{params[:slug]}/edit", notice: "Error: You must enter a new name" }
         format.json { render json: @list.errors, status: :unprocessable_entity }
       end
-    end
+     end
   end
 
   private
   
     def set_list
       @slug_name = params[:id] 
-      @list = find_name_by_slug(params[:id])
-      @slug = search(params[:id])
+      @list = List.find_by(slug: params[:id]).title
+      @slug = List.find_by(slug: params[:id]).id
     end
 
-    def list_params
-      params.fetch(:list, {})
+    def task_params
+      params.require(:list).permit(:slug, :title)
     end
 end

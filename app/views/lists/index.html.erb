@@ -1,7 +1,7 @@
 <div class="list white"> Last created lists
 	<ul id="list">
 	<% @lists.each do |list| %>
-		<li><a href="<%= list[:url] %>" id="" ><%= list[:name] %></a></li>
+		<li><a href="<%= list.slug %>" id="" ><%= list.title %></a></li>
 	<% end %>
 	</ul>
 </div>  

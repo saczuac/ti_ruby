@@ -6,8 +6,8 @@ class CreateTasks < ActiveRecord::Migration[5.0]
       t.integer :percent, null: true
       t.date :since, null: true
       t.date :until, null:true
-      t.string :list, null: false
       t.belongs_to :state, index: true
+      t.belongs_to :list, index: true
       t.belongs_to :priority, index: true
       t.timestamps
     end
