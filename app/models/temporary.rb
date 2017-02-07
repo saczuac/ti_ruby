@@ -4,7 +4,6 @@ class Temporary < Task
 	validates_datetime :until, :after => :since
 	validates_datetime :since, :before => :until
 
-	default_scope -> { where("until >= ?", Time.now) }
-
+	scope :actives, -> { where("until IS NULL OR until >= ?", Time.now) }
 
 end 

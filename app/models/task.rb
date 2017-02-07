@@ -17,7 +17,9 @@ class Task < ApplicationRecord
 		description
 	end
 
-	default_scope -> { where("until IS NULL OR until >= ?", Time.now) }
+	# get active temporaries tasks
+	scope :actives, -> { where("until IS NULL OR until >= ?", Time.now) }
+
 
 	scope :larges, -> { where(type: 'Large') } 
 	scope :simples, -> { where(type: 'Simple') } 

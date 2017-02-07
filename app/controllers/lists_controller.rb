@@ -23,7 +23,8 @@ class ListsController < ApplicationController
     l = List.find_by(slug: params[:id])
     unless l.nil?
       @task = Task.new
-      @tasks = l.tasks.order(:priority_id) || []
+      @tasks = l.tasks.simples.or(l.tasks.actives).or(l.tasks.larges)
+      @tasks = @tasks.order(:priority_id) || []
       @last_update = last_updated_task(@tasks).updated_at > l.updated_at ? last_updated_task(@tasks).updated_at : l.updated_at rescue l.updated_at 
       @created_at = l.created_at
       @test = @tasks.map {|t| t.description }
@@ -95,8 +96,11 @@ class ListsController < ApplicationController
   
     def set_list
       @slug_name = params[:id] 
-      @list = List.find_by(slug: params[:id]).title
-      @slug = List.find_by(slug: params[:id]).id
+      list = List.find_by(slug: params[:id])
+      unless list == nil
+        @list = list.title
+        @slug = list.id
+      end
     end
 
     def task_params
